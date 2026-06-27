@@ -1,0 +1,17 @@
+{
+  "name": "cc-status",
+  "version": "0.1.0",
+  "description": "Shared statusline framework for Claude Code. A single statusLine composer that discovers per-plugin segment manifests (.claude-plugin/statusline.json), runs the ones you enable, and joins them with ' | '. Opt-in: each plugin still works standalone; cc-status composes the fleet onto one bar.",
+  "author": {
+    "name": "betmoar"
+  },
+  "repository": "https://github.com/betmoar/cc-status-plugin",
+  "license": "MIT",
+  "keywords": [
+    "statusline",
+    "framework",
+    "composer",
+    "segments",
+    "claude-code"
+  ]
+}

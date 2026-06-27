@@ -42,18 +42,31 @@ path.
 
 ### 2. Seed the opt-in config
 
+Resolve the control script first. `$CLAUDE_PLUGIN_ROOT` is set inside this skill but
+not always in the shell that runs these blocks, so fall back to the newest cached
+install (same resolution as step 1):
+
+```bash
+CTL="${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/scripts/segmentctl.sh}"
+[ -f "$CTL" ] || CTL="$(ls -d ~/.claude/plugins/cache/*/cc-status/*/scripts/segmentctl.sh 2>/dev/null | sort -V | tail -1)"
+[ -f "$CTL" ] || { echo "cc-status: segmentctl.sh not found — is the cc-status plugin installed?" >&2; exit 1; }
+```
+
+If the resolution block above exits with "segmentctl.sh not found", stop and tell the
+user the cc-status install could not be located (mirrors the "If neither resolves…" guidance in step 1).
+
 Run the deterministic seeder (it writes `~/.claude/cc-status/segments`, enabling
 every plugin segment currently discovered in the cache, and never clobbers a line
 the user already set):
 
 ```bash
-bash "$CLAUDE_PLUGIN_ROOT/scripts/segmentctl.sh" seed
+bash "$CTL" seed
 ```
 
 Then show the user the resulting roster:
 
 ```bash
-bash "$CLAUDE_PLUGIN_ROOT/scripts/segmentctl.sh" list
+bash "$CTL" list
 ```
 
 This is the migration bridge: right after setup the bar matches the composed view

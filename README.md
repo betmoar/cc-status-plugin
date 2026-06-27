@@ -80,6 +80,7 @@ skills/
   adding-a-segment/    # author docs: how a plugin ships a segment
 docs/segment-contract.md
 tests/test-composer.sh # fake cache + fake session JSON; discovery/order/opt-in/join
+CHANGELOG.md
 ```
 
 ## Tests
@@ -87,6 +88,10 @@ tests/test-composer.sh # fake cache + fake session JSON; discovery/order/opt-in/
 ```bash
 bash tests/test-composer.sh
 ```
+
+## Changelog
+
+See [`CHANGELOG.md`](CHANGELOG.md). Versioning follows [SemVer](https://semver.org).
 
 ## License
 

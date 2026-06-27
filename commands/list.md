@@ -12,7 +12,10 @@ Show the user every plugin segment cc-status discovered and its current state.
 Execute:
 
 ```bash
-bash "$CLAUDE_PLUGIN_ROOT/scripts/segmentctl.sh" list
+CTL="${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/scripts/segmentctl.sh}"
+[ -f "$CTL" ] || CTL="$(ls -d ~/.claude/plugins/cache/*/cc-status/*/scripts/segmentctl.sh 2>/dev/null | sort -V | tail -1)"
+[ -f "$CTL" ] || { echo "cc-status: segmentctl.sh not found — is the cc-status plugin installed? Run /cc-status:setup." >&2; exit 1; }
+bash "$CTL" list
 ```
 
 Present the script's stdout **verbatim** — it is already formatted (one line per

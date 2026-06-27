@@ -9,14 +9,22 @@ disable-model-invocation: true
 
 Requested: **$ARGUMENTS**
 
+First resolve the control script (`$CLAUDE_PLUGIN_ROOT` is not always set in the
+shell, so fall back to the newest cached install):
+
+```bash
+CTL="${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/scripts/segmentctl.sh}"
+[ -f "$CTL" ] || CTL="$(ls -d ~/.claude/plugins/cache/*/cc-status/*/scripts/segmentctl.sh 2>/dev/null | sort -V | tail -1)"
+[ -f "$CTL" ] || { echo "cc-status: segmentctl.sh not found — is the cc-status plugin installed? Run /cc-status:setup." >&2; exit 1; }
+```
+
 1. Parse `$ARGUMENTS` into a plugin `<name>` and a non-negative integer `<n>`. If
-   either is missing or `<n>` is not a number, run
-   `bash "$CLAUDE_PLUGIN_ROOT/scripts/segmentctl.sh" list` to show current names and
-   orders, then stop.
+   either is missing or `<n>` is not a number, run `bash "$CTL" list` to show current
+   names and orders, then stop.
 2. Run:
 
    ```bash
-   bash "$CLAUDE_PLUGIN_ROOT/scripts/segmentctl.sh" order <name> <n>
+   bash "$CTL" order <name> <n>
    ```
 
 3. Confirm in one line (e.g. "cc-reload → order 5; it moves left of segments with a
